@@ -12,6 +12,7 @@ const __PORT = process.env.PORT || 5000;
 const app = express();
 
 // Database
+mongoose.set("strictQuery", true);
 connectDatabase();
 
 // Middlewares
