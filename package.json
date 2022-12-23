@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"start": "NODE_ENV=production node ./server/index.js",
-		"dev": "nodemon ./server/index.js",
+		"start": "cd server && NODE_ENV=production node index.js",
+		"dev": "cd server && nodemon index.js",
 		"build": "cd client && npm run build",
 		"client": "cd client && npm start"
 	},
