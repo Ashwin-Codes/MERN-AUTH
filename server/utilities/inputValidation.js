@@ -20,4 +20,11 @@ function validateSignup(username, email, password) {
 	return isValid;
 }
 
-export { validateSignup };
+function validateLogin(username, password) {
+	if (!username || !password) {
+		return false;
+	}
+	return true;
+}
+
+export { validateSignup, validateLogin };
