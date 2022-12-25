@@ -11,6 +11,8 @@ import signupRoute from "./routes/signupRoute.js";
 import loginRoute from "./routes/loginRoute.js";
 import refreshTokenRoute from "./routes/refreshTokenRoute.js";
 import logoutRoute from "./routes/logoutRoute.js";
+import quotesRoute from "./routes/quotesRoute.js";
+import verifyUser from "./middlewares/verifyUser.js";
 
 const __PORT = process.env.PORT || 5000;
 const app = express();
@@ -35,6 +37,12 @@ app.use(signupRoute);
 app.use(loginRoute);
 app.use(refreshTokenRoute);
 app.use(logoutRoute);
+
+// Access token verification
+app.use(verifyUser);
+
+// Protected Routes
+app.use(quotesRoute);
 
 mongoose.connection.once("open", () => {
 	app.listen(__PORT, () => {
