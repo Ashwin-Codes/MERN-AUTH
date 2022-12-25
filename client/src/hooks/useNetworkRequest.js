@@ -5,9 +5,9 @@ import routes from "../config/routes.json";
 const axiosRequest = axios.create({ baseURL: routes.baseUrl });
 
 export default function useNetworkRequest() {
-	const signUpRequest = useCallback(async (jsonObj, callbackFunc, headers = {}) => {
+	const signUpRequest = useCallback(async (credentials, errorCb, headers = {}) => {
 		try {
-			const response = await axiosRequest.post(routes.signup, jsonObj, {
+			const response = await axiosRequest.post(routes.signup, credentials, {
 				headers: {
 					"Content-Type": "application/json",
 					...headers,
@@ -16,9 +16,23 @@ export default function useNetworkRequest() {
 
 			return response;
 		} catch (err) {
-			callbackFunc(err);
+			errorCb(err);
 		}
 	}, []);
 
-	return { signUpRequest };
+	const loginRequest = useCallback(async (credentials, errorCb, headers = {}) => {
+		try {
+			const response = await axiosRequest.post(routes.login, credentials, {
+				headers: {
+					"Content-Type": "application/json",
+					...headers,
+				},
+			});
+			return response;
+		} catch (err) {
+			errorCb(err);
+		}
+	}, []);
+
+	return { signUpRequest, loginRequest };
 }
