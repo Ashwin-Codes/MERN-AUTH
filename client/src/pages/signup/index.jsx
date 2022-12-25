@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { BiUserCircle as UsernameIcon } from "react-icons/bi";
 import { BiMailSend as MailIcon } from "react-icons/bi";
 import { RiLockPasswordLine as PasswordIcon } from "react-icons/ri";
+import { FaSpinner as SpinnerIcon } from "react-icons/fa";
 
 // Packages
 import { ToastContainer, toast } from "react-toastify";
@@ -24,6 +25,7 @@ export default function Index() {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
 	const { validateUsername, validateEmail, validatePassword } = useFormValidator();
@@ -37,22 +39,35 @@ export default function Index() {
 		const usernameIsValid = validateUsername(username);
 		const emailIsValid = validateEmail(email);
 		const passwordIsValid = validatePassword(password);
-
 		const formIsValid = usernameIsValid && emailIsValid && passwordIsValid;
+
+		let focused = false;
 
 		// Handle error UI
 		if (!formIsValid) {
 			if (!usernameIsValid) {
 				usernameParentRef.current.children[0].classList.add(errorClassText);
 				usernameParentRef.current.classList.add(errorClassBorder);
+				if (!focused) {
+					usernameParentRef.current.children[1].focus();
+					focused = true;
+				}
 			}
 			if (!emailIsValid) {
 				emailParentRef.current.children[0].classList.add(errorClassText);
 				emailParentRef.current.classList.add(errorClassBorder);
+				if (!focused) {
+					emailParentRef.current.children[1].focus();
+					focused = true;
+				}
 			}
 			if (!passwordIsValid) {
 				passwordParentRef.current.children[0].classList.add(errorClassText);
 				passwordParentRef.current.classList.add(errorClassBorder);
+				if (!focused) {
+					passwordParentRef.current.children[1].focus();
+					focused = true;
+				}
 			}
 			return;
 		}
@@ -64,6 +79,7 @@ export default function Index() {
 		};
 
 		function errorCallback(err) {
+			setIsLoading(false);
 			if (err?.response?.status === 409) {
 				if (err?.response?.data?.message === "username not available") {
 					toast.error("Username not available");
@@ -76,11 +92,11 @@ export default function Index() {
 			}
 			toast.error("Something went wrong, please try again later");
 		}
-
+		setIsLoading(true);
 		const response = await signUpRequest(payload, errorCallback);
 		if (!response) return;
-
-		toast.success("Account Created Successfully");
+		setIsLoading(false);
+		toast.success("Account Created Successfully.");
 		setTimeout(() => {
 			navigate(routes.login);
 		}, 3000);
@@ -189,8 +205,12 @@ export default function Index() {
 								/>
 							</div>
 						</div>
-						<button type="submit" className="bg-gray-700  h-12 rounded-xl text-white text-xl font-bold">
-							Sign Up
+						<button
+							type="submit"
+							className="bg-gray-700  h-12 rounded-xl text-white text-xl font-bold flex justify-center items-center"
+							disabled={isLoading}>
+							{!isLoading && "Sign Up"}
+							{isLoading && <SpinnerIcon className="animate-spin" />}
 						</button>
 					</form>
 					<div className="mt-2">
@@ -200,7 +220,7 @@ export default function Index() {
 							onClick={() => {
 								navigate(routes.login);
 							}}>
-							Sign In
+							Login
 						</button>
 					</div>
 				</div>
