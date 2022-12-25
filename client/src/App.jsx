@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 // Pages
 import Signup from "./pages/signup";
-import Login from "./pages/signup";
+import Login from "./pages/login";
 
 export default function App() {
 	return (
