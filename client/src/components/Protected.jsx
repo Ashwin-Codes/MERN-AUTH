@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { getAuthState } from "../features/authSlice";
+import { getAuthState } from "../features/auth/authSlice";
 import routes from "../config/routes.json";
 
 export default function Protected({ children }) {

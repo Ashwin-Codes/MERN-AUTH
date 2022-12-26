@@ -1,13 +1,29 @@
-import axios from "axios";
-import { useCallback } from "react";
+import { useEffect } from "react";
 import routes from "../config/routes.json";
-
-const axiosRequest = axios.create({ baseURL: routes.baseUrl });
+import axios from "../api/axios";
+import { axiosPrivate } from "../api/axios";
+import { useSelector } from "react-redux";
+import { getAuthState } from "../features/auth/authSlice";
 
 export default function useNetworkRequest() {
-	const signUpRequest = useCallback(async (credentials, errorCb, headers = {}) => {
+	const auth = useSelector(getAuthState);
+
+	useEffect(() => {
+		const addAuthIntercept = axiosPrivate.interceptors.request.use((config) => {
+			if (!config.headers["Authorization"]) {
+				config.headers["Authorization"] = `Bearer ${auth.accessToken}`;
+			}
+			return config;
+		});
+
+		return () => {
+			axiosPrivate.interceptors.request.eject(addAuthIntercept);
+		};
+	}, [auth.accessToken]);
+
+	async function signUpRequest(credentials, errorCb, headers = {}) {
 		try {
-			const response = await axiosRequest.post(routes.signup, credentials, {
+			const response = await axios.post(routes.signup, credentials, {
 				headers: {
 					"Content-Type": "application/json",
 					...headers,
@@ -18,11 +34,11 @@ export default function useNetworkRequest() {
 		} catch (err) {
 			errorCb(err);
 		}
-	}, []);
+	}
 
-	const loginRequest = useCallback(async (credentials, errorCb, headers = {}) => {
+	async function loginRequest(credentials, errorCb, headers = {}) {
 		try {
-			const response = await axiosRequest.post(routes.login, credentials, {
+			const response = await axios.post(routes.login, credentials, {
 				headers: {
 					"Content-Type": "application/json",
 					...headers,
@@ -32,7 +48,16 @@ export default function useNetworkRequest() {
 		} catch (err) {
 			errorCb(err);
 		}
-	}, []);
+	}
 
-	return { signUpRequest, loginRequest };
+	async function quotesRequest() {
+		const response = await axiosPrivate.get(routes.quotes, {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		return response;
+	}
+
+	return { signUpRequest, loginRequest, quotesRequest };
 }

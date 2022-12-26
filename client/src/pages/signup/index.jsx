@@ -31,8 +31,8 @@ export default function Index() {
 	const { validateUsername, validateEmail, validatePassword } = useFormValidator();
 	const { signUpRequest } = useNetworkRequest();
 
-	const errorClassText = "text-red-700";
-	const errorClassBorder = "border-red-700";
+	const errorClassText = "!text-red-700";
+	const errorClassBorder = "!border-red-700";
 
 	async function handleSubmit(e) {
 		e.preventDefault();

@@ -13,7 +13,7 @@ import { FaSpinner as SpinnerIcon } from "react-icons/fa";
 // Packages
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { setAuth } from "../../features/authSlice";
+import { setAuth } from "../../features/auth/authSlice";
 
 // Config
 import routes from "../../config/routes.json";
@@ -32,8 +32,8 @@ export default function Index() {
 
 	const dispatch = useDispatch();
 
-	const errorClassText = "text-red-700";
-	const errorClassBorder = "border-red-700";
+	const errorClassText = "!text-red-700";
+	const errorClassBorder = "!border-red-700";
 
 	async function handleSubmit(e) {
 		e.preventDefault();
