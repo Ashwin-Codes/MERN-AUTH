@@ -43,6 +43,8 @@ async function loginController(req, res, next) {
 	// Send tokens to user
 	res.cookie("jwt", refreshToken, {
 		httpOnly: true,
+		sameSite: "None",
+		secure: true,
 		maxAge: 24 * 60 * 60 * 1000,
 	});
 

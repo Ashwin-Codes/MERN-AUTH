@@ -5,6 +5,7 @@ import useNetworkRequest from "../../hooks/useNetworkRequest";
 
 // Components
 import QuotesList from "../../features/quotes/QuotesList";
+import Navbar from "../../components/Navbar";
 
 export default function Index() {
 	const { quotesRequest } = useNetworkRequest();
@@ -20,8 +21,11 @@ export default function Index() {
 	}, [dispatch, quotesRequest]);
 
 	return (
-		<div className="bg-gray-400 flex justify-center items-center h-screen">
-			<QuotesList />
-		</div>
+		<>
+			<Navbar />
+			<div className="bg-gray-400 flex justify-center items-center h-screen">
+				<QuotesList />
+			</div>
+		</>
 	);
 }

@@ -3,5 +3,6 @@
 	"signup": "/signup",
 	"login": "/login",
 	"home": "/home",
-	"quotes": "/quotes"
+	"quotes": "/quotes",
+	"logout": "/logout"
 }

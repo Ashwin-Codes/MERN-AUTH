@@ -43,6 +43,7 @@ export default function useNetworkRequest() {
 					"Content-Type": "application/json",
 					...headers,
 				},
+				withCredentials: true,
 			});
 			return response;
 		} catch (err) {
@@ -59,5 +60,14 @@ export default function useNetworkRequest() {
 		return response;
 	}
 
-	return { signUpRequest, loginRequest, quotesRequest };
+	async function logoutRequest(errorCb) {
+		try {
+			const response = await axios.get(routes.logout, { withCredentials: true });
+			return response;
+		} catch (err) {
+			errorCb();
+		}
+	}
+
+	return { signUpRequest, loginRequest, quotesRequest, logoutRequest };
 }
