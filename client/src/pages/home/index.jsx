@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setQuotes } from "../../features/quotes/quoteSlice";
-import useNetworkRequest from "../../hooks/useNetworkRequest";
+import usePrivateNetworkRequest from "../../hooks/usePrivateNetworkRequest";
 
 // Components
 import QuotesList from "../../features/quotes/QuotesList";
 import Navbar from "../../components/Navbar";
 
 export default function Index() {
-	const { quotesRequest } = useNetworkRequest();
+	const { quotesRequest } = usePrivateNetworkRequest();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -17,6 +17,7 @@ export default function Index() {
 			const quotes = response.data;
 			dispatch(setQuotes(quotes));
 		}
+
 		getQuotes();
 	}, [dispatch, quotesRequest]);
 

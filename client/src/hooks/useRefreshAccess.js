@@ -17,6 +17,7 @@ export default function useRefreshAccess() {
 					})
 				);
 			}
+			return response;
 		} catch (err) {
 			console.log("err : ", err);
 		}

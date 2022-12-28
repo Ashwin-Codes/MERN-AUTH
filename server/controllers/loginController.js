@@ -33,8 +33,12 @@ async function loginController(req, res, next) {
 	}
 
 	// Generate tokens
-	const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
-	const refreshToken = jwt.sign({ username: user.username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
+	const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
+		expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+	});
+	const refreshToken = jwt.sign({ username: user.username }, process.env.REFRESH_TOKEN_SECRET, {
+		expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+	});
 
 	// Save refresh token
 	user.refreshToken = refreshToken;

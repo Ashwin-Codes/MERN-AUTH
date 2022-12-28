@@ -14,7 +14,7 @@ async function refreshTokenController(req, res, next) {
 		if (err || user.username !== decoded.username) return res.sendStatus(401); // Unauthorized
 
 		const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
-			expiresIn: "15m",
+			expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
 		});
 		res.json({ username: user.username, accessToken });
 	});
