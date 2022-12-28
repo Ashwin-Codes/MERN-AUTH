@@ -1,8 +1,10 @@
 // Hooks
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import useFormValidator from "../../hooks/useFormValidator";
 import useNetworkRequest from "../../hooks/useNetworkRequest";
 import { useNavigate } from "react-router-dom";
+import { getAuthState } from "../../features/auth/authSlice";
+import { useSelector } from "react-redux";
 
 // Icons
 import { BiUserCircle as UsernameIcon } from "react-icons/bi";
@@ -28,11 +30,19 @@ export default function Index() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
+	const auth = useSelector(getAuthState);
 	const { validateUsername, validateEmail, validatePassword } = useFormValidator();
 	const { signUpRequest } = useNetworkRequest();
 
 	const errorClassText = "!text-red-700";
 	const errorClassBorder = "!border-red-700";
+
+	// Check if allready logged in
+	useEffect(() => {
+		if (auth?.accessToken) {
+			navigate("/home"); // Navigate to home if logged in
+		}
+	}, [auth, navigate]);
 
 	async function handleSubmit(e) {
 		e.preventDefault();

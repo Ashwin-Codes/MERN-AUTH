@@ -4,5 +4,6 @@
 	"login": "/login",
 	"home": "/home",
 	"quotes": "/quotes",
-	"logout": "/logout"
+	"logout": "/logout",
+	"refresh": "/refresh"
 }

@@ -69,5 +69,12 @@ export default function useNetworkRequest() {
 		}
 	}
 
-	return { signUpRequest, loginRequest, quotesRequest, logoutRequest };
+	async function refreshAccessRequest() {
+		try {
+			const response = await axios.get(routes.refresh, { withCredentials: true });
+			return response;
+		} catch (err) {}
+	}
+
+	return { signUpRequest, loginRequest, quotesRequest, logoutRequest, refreshAccessRequest };
 }
