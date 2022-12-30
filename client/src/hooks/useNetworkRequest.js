@@ -1,8 +1,9 @@
+import { useCallback } from "react";
 import routes from "../config/routes.json";
 import axios from "../api/axios";
 
 export default function useNetworkRequest() {
-	async function signUpRequest(credentials, errorCb, headers = {}) {
+	const signUpRequest = useCallback(async (credentials, errorCb, headers = {}) => {
 		try {
 			const response = await axios.post(routes.signup, credentials, {
 				headers: {
@@ -15,9 +16,9 @@ export default function useNetworkRequest() {
 		} catch (err) {
 			errorCb(err);
 		}
-	}
+	}, []);
 
-	async function loginRequest(credentials, errorCb, headers = {}) {
+	const loginRequest = useCallback(async (credentials, errorCb, headers = {}) => {
 		try {
 			const response = await axios.post(routes.login, credentials, {
 				headers: {
@@ -30,23 +31,23 @@ export default function useNetworkRequest() {
 		} catch (err) {
 			errorCb(err);
 		}
-	}
+	}, []);
 
-	async function logoutRequest(errorCb) {
+	const logoutRequest = useCallback(async (errorCb) => {
 		try {
 			const response = await axios.get(routes.logout, { withCredentials: true });
 			return response;
 		} catch (err) {
 			errorCb();
 		}
-	}
+	}, []);
 
-	async function refreshAccessRequest() {
+	const refreshAccessRequest = useCallback(async () => {
 		try {
 			const response = await axios.get(routes.refresh, { withCredentials: true });
 			return response;
 		} catch (err) {}
-	}
+	}, []);
 
 	return { signUpRequest, loginRequest, logoutRequest, refreshAccessRequest };
 }

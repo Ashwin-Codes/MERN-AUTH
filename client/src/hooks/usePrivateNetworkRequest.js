@@ -1,5 +1,5 @@
 import { axiosPrivate } from "../api/axios";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getAuthState } from "../features/auth/authSlice";
 import routes from "../config/routes.json";
@@ -39,7 +39,7 @@ export default function usePrivateNetworkRequest() {
 		};
 	}, [auth, refresh]);
 
-	async function quotesRequest() {
+	const quotesRequest = useCallback(async () => {
 		try {
 			const response = await axiosPrivate.get(routes.quotes, {
 				headers: {
@@ -50,7 +50,7 @@ export default function usePrivateNetworkRequest() {
 		} catch (err) {
 			console.error(err.message);
 		}
-	}
+	}, []);
 
 	return { quotesRequest };
 }
