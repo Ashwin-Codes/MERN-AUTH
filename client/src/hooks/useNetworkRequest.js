@@ -46,7 +46,9 @@ export default function useNetworkRequest() {
 		try {
 			const response = await axios.get(routes.refresh, { withCredentials: true });
 			return response;
-		} catch (err) {}
+		} catch (err) {
+			return err;
+		}
 	}, []);
 
 	return { signUpRequest, loginRequest, logoutRequest, refreshAccessRequest };

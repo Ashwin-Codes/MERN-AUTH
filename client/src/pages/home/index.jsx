@@ -14,6 +14,7 @@ export default function Index() {
 	useEffect(() => {
 		async function getQuotes() {
 			const response = await quotesRequest();
+			if (!response?.data) return;
 			const quotes = response.data;
 			dispatch(setQuotes(quotes));
 		}

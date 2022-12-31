@@ -15,7 +15,7 @@ export default function App() {
 	const { refresh } = useRefreshAccess();
 
 	useEffect(() => {
-		if (!auth?.accessToken) {
+		if (!auth?.accessToken && !auth?.relogin) {
 			refresh();
 		}
 	}, [auth, refresh]);

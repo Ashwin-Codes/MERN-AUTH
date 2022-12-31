@@ -6,10 +6,12 @@ import { setAuth } from "../features/auth/authSlice";
 export default function useRefreshAccess() {
 	const { refreshAccessRequest } = useNetworkRequest();
 	const dispatch = useDispatch();
-
 	const refresh = useCallback(async () => {
 		try {
 			const response = await refreshAccessRequest();
+			if (response?.response?.status === 401 && response?.response?.data?.message === "refresh token expired") {
+				return { refreshTokenExpired: true };
+			}
 			if (response?.status === 200) {
 				dispatch(
 					setAuth({
@@ -20,7 +22,7 @@ export default function useRefreshAccess() {
 			}
 			return response;
 		} catch (err) {
-			console.log("err : ", err);
+			console.log(err);
 		}
 	}, [dispatch, refreshAccessRequest]);
 

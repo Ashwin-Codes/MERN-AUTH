@@ -40,7 +40,8 @@ export default function Index() {
 	// Check if allready logged in
 	useEffect(() => {
 		if (auth?.accessToken) {
-			navigate("/home"); // Navigate to home if logged in
+			const from = auth?.relogin?.pathname || "/home";
+			navigate(from); // Navigate to home if logged in
 		}
 	}, [auth, navigate]);
 
@@ -91,7 +92,7 @@ export default function Index() {
 		}
 		setIsLoading(true);
 		const response = await loginRequest(payload, errorCallback);
-		if (!response) return;
+		if (!response?.data) return;
 
 		dispatch(
 			setAuth({

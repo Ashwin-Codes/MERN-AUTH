@@ -34,7 +34,6 @@ async function signupController(req, res, next) {
 	// Create User
 	try {
 		const hashedPassword = await bcrypt.hash(password, 10);
-		console.log("hashed pass is :", hashedPassword);
 		await User.create({
 			username,
 			email,

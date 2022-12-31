@@ -1,13 +1,16 @@
 import { axiosPrivate } from "../api/axios";
 import { useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
-import { getAuthState } from "../features/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { getAuthState, relogin } from "../features/auth/authSlice";
 import routes from "../config/routes.json";
 import useRefreshAccess from "./useRefreshAccess";
+import { useLocation } from "react-router-dom";
 
 export default function usePrivateNetworkRequest() {
 	const auth = useSelector(getAuthState);
 	const { refresh } = useRefreshAccess();
+	const dispatch = useDispatch();
+	const location = useLocation();
 
 	useEffect(() => {
 		// Add auth header to all private requests
@@ -27,6 +30,10 @@ export default function usePrivateNetworkRequest() {
 				if (error.response.status === 403 && !error.config.sent) {
 					error.config.sent = true;
 					const res = await refresh();
+					if (res.refreshTokenExpired) {
+						dispatch(relogin({ from: location }));
+						return;
+					}
 					error.config.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
 					return axiosPrivate(error.config);
 				}
@@ -37,7 +44,7 @@ export default function usePrivateNetworkRequest() {
 			axiosPrivate.interceptors.request.eject(addAuthIntercept);
 			axiosPrivate.interceptors.response.eject(refreshAccessTokenIntercept);
 		};
-	}, [auth, refresh]);
+	}, [auth, refresh, dispatch, location]);
 
 	const quotesRequest = useCallback(async () => {
 		try {
@@ -48,7 +55,7 @@ export default function usePrivateNetworkRequest() {
 			});
 			return response;
 		} catch (err) {
-			console.error(err.message);
+			console.error(err);
 		}
 	}, []);
 

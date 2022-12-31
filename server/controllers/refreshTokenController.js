@@ -11,7 +11,8 @@ async function refreshTokenController(req, res, next) {
 	if (!user) return res.sendStatus(401); // Unauthorized
 
 	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-		if (err || user.username !== decoded.username) return res.sendStatus(401); // Unauthorized
+		if (err || user.username !== decoded.username)
+			return res.status(401).json({ message: "refresh token expired" }); // Unauthorized
 
 		const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
 			expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
