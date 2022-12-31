@@ -24,3 +24,36 @@ Frontend connect users to backend endpoints using UI
 4. Handles expiry of access and refresh tokens behind the scenes
 5. Persists user login without saving JWT tokens in localstorage for max security
    <br>
+
+# 💡 MONGODB ATLAS SAMPLE DATA
+
+<b>Database name :</b> UserDB
+<br>
+<b>Collections :</b>
+
+1. quotes
+2. users
+   <br>
+
+<b>quotes sample documents:</b>
+
+```json
+{
+quote:"An expert is a person who has made all the mistakes that can be made in a very narrow field."
+author:"Neils Bohr"
+}
+```
+
+```json
+{
+quote:"The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom."
+author:"Isaac Asimov"
+}
+```
+
+```json
+{
+quote:"If we knew what it was we were doing, it would not be called research, would it?"
+author:"Albert Einstein"
+}
+```
